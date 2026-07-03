@@ -17,7 +17,7 @@ namespace GlamShuffle.UI
         private readonly GlamourerIpc _glamourer;
 
         // Cached design list for the Exclusions tab, refreshed on open and on demand
-        private Dictionary<Guid, string> _designCache = new();
+        private Dictionary<Guid, (string Name, string Path)> _designCache = new();
         private DateTimeOffset _designCacheRefreshedAt = DateTimeOffset.MinValue;
         private string _exclusionFilter = "";
 
@@ -130,7 +130,7 @@ namespace GlamShuffle.UI
 
             var excluded = _config.ExcludedDesignGuids.Count;
             if (_designCache.Count > 0)
-                ImGui.TextUnformatted($"  Active designs: {_designCache.Count - excluded} / {_designCache.Count} ({excluded} excluded)");
+                ImGui.TextUnformatted($"  Active designs: {Math.Max(0, _designCache.Count - excluded)} / {_designCache.Count} ({excluded} excluded)");
 
             if (!string.IsNullOrEmpty(_state.StatusMessage))
             {
@@ -158,7 +158,7 @@ namespace GlamShuffle.UI
             if (DateTimeOffset.UtcNow - _designCacheRefreshedAt > TimeSpan.FromSeconds(30))
                 RefreshDesignCache();
 
-            var activeCount = _designCache.Count - _config.ExcludedDesignGuids.Count;
+            var activeCount = Math.Max(0, _designCache.Count - _config.ExcludedDesignGuids.Count);
             ImGui.TextUnformatted($"Designs in rotation: {activeCount} / {_designCache.Count}");
             ImGui.SameLine(ImGui.GetContentRegionAvail().X - 110);
             if (ImGui.Button("Refresh Designs"))
@@ -188,13 +188,13 @@ namespace GlamShuffle.UI
             ImGui.BeginChild("##designlist", new Vector2(0, 0), true);
 
             var sorted = _designCache
-                .OrderBy(kv => kv.Value, StringComparer.OrdinalIgnoreCase)
+                .OrderBy(kv => kv.Value.Name, StringComparer.OrdinalIgnoreCase)
                 .ToList();
 
-            foreach (var (guid, name) in sorted)
+            foreach (var (guid, design) in sorted)
             {
                 if (!string.IsNullOrEmpty(_exclusionFilter) &&
-                    name.IndexOf(_exclusionFilter, StringComparison.OrdinalIgnoreCase) < 0)
+                    design.Name.IndexOf(_exclusionFilter, StringComparison.OrdinalIgnoreCase) < 0)
                     continue;
 
                 var guidStr = guid.ToString();
@@ -209,7 +209,7 @@ namespace GlamShuffle.UI
                     _config.Save();
                 }
                 ImGui.SameLine();
-                ImGui.TextUnformatted(name);
+                ImGui.TextUnformatted(design.Name);
             }
 
             ImGui.EndChild();

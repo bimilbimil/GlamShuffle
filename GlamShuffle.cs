@@ -29,8 +29,8 @@ namespace GlamShuffle
         private readonly MainWindow _mainWindow;
         private readonly WindowSystem _windowSystem = new("GlamShuffle");
 
-        // Cached design list, refreshed before each rotation pick
-        private Dictionary<Guid, string> _designCache = new();
+        // Cached design list (GUID → (name, path)), refreshed before each rotation pick
+        private Dictionary<Guid, (string Name, string Path)> _designCache = new();
         private DateTime _designCacheRefreshedAt = DateTime.MinValue;
 
         public GlamShufflePlugin(
@@ -122,14 +122,14 @@ namespace GlamShuffle
             }
 
             var pick = active[Random.Shared.Next(active.Count)];
-            var success = _glamourer.ApplyDesign(pick.Key, pick.Value);
+            var success = _glamourer.ApplyDesign(pick.Key, pick.Value.Name, pick.Value.Path);
 
             if (success)
             {
                 _state.LastApplied = DateTime.UtcNow;
-                _state.LastAppliedName = pick.Value;
+                _state.LastAppliedName = pick.Value.Name;
                 _state.StatusMessage = null;
-                _log.Info("[GlamShuffle] Applied design '{Name}'", pick.Value);
+                _log.Info("[GlamShuffle] Applied design '{Name}' (path='{Path}')", pick.Value.Name, pick.Value.Path);
             }
             else
             {
