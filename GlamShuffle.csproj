@@ -31,5 +31,6 @@
   <ItemGroup>
     <None Include="GlamShuffle.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="GlamShuffle.yaml" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="glamshuffle.png" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

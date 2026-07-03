@@ -19,5 +19,6 @@
   "ApplicableVersion": "any",
   "DalamudApiLevel": 15,
   "HasConfigUi": true,
-  "HasMainUi": true
+  "HasMainUi": true,
+  "IconUrl": "https://raw.githubusercontent.com/bimilbimil/GlamShuffle/main/glamshuffle.png"
 }
