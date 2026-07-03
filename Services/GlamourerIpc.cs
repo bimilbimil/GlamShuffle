@@ -55,8 +55,8 @@ namespace GlamShuffle.Services
         {
             try
             {
-                var ec = _pi.GetIpcSubscriber<Guid, int, uint, int>("Glamourer.ApplyDesign")
-                    .InvokeFunc(guid, 0, 0u);
+                var ec = _pi.GetIpcSubscriber<Guid, int, int>("Glamourer.ApplyDesign")
+                    .InvokeFunc(guid, 0);
                 if (ec == 0) return true;
                 _log.Warning("[GlamShuffle] ApplyDesign(Guid) returned ec={Ec} for '{Name}'", ec, name);
             }
@@ -67,8 +67,8 @@ namespace GlamShuffle.Services
 
             try
             {
-                var ec = _pi.GetIpcSubscriber<string, int, uint, int>("Glamourer.ApplyDesign")
-                    .InvokeFunc(name, 0, 0u);
+                var ec = _pi.GetIpcSubscriber<string, int, int>("Glamourer.ApplyDesign")
+                    .InvokeFunc(name, 0);
                 if (ec == 0) return true;
                 _log.Warning("[GlamShuffle] ApplyDesign(name) returned ec={Ec} for '{Name}'", ec, name);
                 return false;
