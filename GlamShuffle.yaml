@@ -2,7 +2,7 @@
   "Author": "Asphodel",
   "Name": "Glam Shuffle",
   "InternalName": "GlamShuffle",
-  "AssemblyVersion": "1.0.0.0",
+  "AssemblyVersion": "1.0.0.1",
   "Description": "Automatically applies a random Glamourer design from your collection every X configurable minutes. Includes a rotation manager to exclude specific designs.",
   "ApplicableVersion": "any",
   "DalamudApiLevel": 15,

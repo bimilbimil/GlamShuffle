@@ -5,21 +5,27 @@
     "Punchline": "Random glamour, on a timer.",
     "Description": "Automatically applies a random Glamourer design from your collection every X configurable minutes. Includes a rotation manager to exclude specific designs.",
     "InternalName": "GlamShuffle",
-    "AssemblyVersion": "1.0.0.0",
+    "AssemblyVersion": "1.0.0.1",
     "RepoUrl": "https://github.com/bimilbimil/GlamShuffle",
     "ApplicableVersion": "any",
     "DalamudApiLevel": 15,
     "IsHide": false,
     "IsTestingExclusive": false,
     "DownloadCount": 0,
-    "LastUpdate": 0,
+    "LastUpdate": 1783100095,
     "LoadPriority": 0,
     "LoadRequiredState": 0,
     "LoadSync": false,
     "CanUnloadAsync": false,
-    "DownloadLinkInstall": "https://github.com/bimilbimil/GlamShuffle/releases/latest/download/GlamShuffle.zip",
-    "DownloadLinkUpdate": "https://github.com/bimilbimil/GlamShuffle/releases/latest/download/GlamShuffle.zip",
-    "DownloadLinkTesting": "https://github.com/bimilbimil/GlamShuffle/releases/latest/download/GlamShuffle.zip",
-    "Tags": [ "glamourer", "glamour", "fashion", "automation", "rotation" ]
+    "DownloadLinkInstall": "https://github.com/bimilbimil/GlamShuffle/releases/download/v1.0.0/GlamShuffle.zip",
+    "DownloadLinkUpdate": "https://github.com/bimilbimil/GlamShuffle/releases/download/v1.0.0/GlamShuffle.zip",
+    "DownloadLinkTesting": "https://github.com/bimilbimil/GlamShuffle/releases/download/v1.0.0/GlamShuffle.zip",
+    "Tags": [
+      "glamourer",
+      "glamour",
+      "fashion",
+      "automation",
+      "rotation"
+    ]
   }
 ]
