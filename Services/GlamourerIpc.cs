@@ -49,26 +49,27 @@ namespace GlamShuffle.Services
         }
 
         // Applies a design to the local player (object index 0).
-        // Tries GUID-based endpoint first (newer Glamourer), falls back to name-based.
+        // Tries GUID-based endpoint first, falls back to name-based.
+        // The 4th arg (false) signals "apply" rather than "revert".
         // Returns true on success.
         public bool ApplyDesign(Guid guid, string name)
         {
             try
             {
-                var ec = _pi.GetIpcSubscriber<Guid, int, int>("Glamourer.ApplyDesign")
-                    .InvokeFunc(guid, 0);
+                var ec = _pi.GetIpcSubscriber<Guid, int, uint, bool, int>("Glamourer.ApplyDesign")
+                    .InvokeFunc(guid, 0, 0u, false);
                 if (ec == 0) return true;
                 _log.Warning("[GlamShuffle] ApplyDesign(Guid) returned ec={Ec} for '{Name}'", ec, name);
             }
             catch
             {
-                // Endpoint doesn't exist on this Glamourer version — fall through to name fallback
+                // Signature differs on this Glamourer version — try name fallback
             }
 
             try
             {
-                var ec = _pi.GetIpcSubscriber<string, int, int>("Glamourer.ApplyDesign")
-                    .InvokeFunc(name, 0);
+                var ec = _pi.GetIpcSubscriber<string, int, uint, bool, int>("Glamourer.ApplyDesign")
+                    .InvokeFunc(name, 0, 0u, false);
                 if (ec == 0) return true;
                 _log.Warning("[GlamShuffle] ApplyDesign(name) returned ec={Ec} for '{Name}'", ec, name);
                 return false;
