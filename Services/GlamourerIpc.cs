@@ -53,13 +53,7 @@ namespace GlamShuffle.Services
         // Returns true if any attempt succeeds (ec == 0).
         public bool ApplyDesign(Guid guid, string name, string path)
         {
-            if (TryApply(guid, name, path))
-            {
-                // Trigger a Penumbra redraw so the model reflects Glamourer's new state
-                RedrawPlayer();
-                return true;
-            }
-            return false;
+            return TryApply(guid, name, path);
         }
 
         private bool TryApply(Guid guid, string name, string path)
@@ -71,10 +65,10 @@ namespace GlamShuffle.Services
                 {
                     var ec = _pi.GetIpcSubscriber<Guid, int, uint, bool, int>("Glamourer.ApplyDesign")
                         .InvokeFunc(guid, idx, 0u, false);
-                    _log.Debug("[GlamShuffle] ApplyDesign(Guid,{Idx},uint,bool) ec={Ec}", idx, ec);
-                    if (ec == 0) { _log.Debug("[GlamShuffle] Succeeded via Guid idx={Idx}", idx); return true; }
+                    _log.Warning("[GlamShuffle] ApplyDesign(Guid,idx={Idx},uint,bool) ec={Ec}", idx, ec);
+                    if (ec == 0) { _log.Warning("[GlamShuffle] Branch: Guid idx={Idx} succeeded", idx); return true; }
                 }
-                catch (Exception ex) { _log.Debug(ex, "[GlamShuffle] ApplyDesign(Guid,{Idx}) threw", idx); }
+                catch (Exception ex) { _log.Warning(ex, "[GlamShuffle] ApplyDesign(Guid,idx={Idx}) threw", idx); }
             }
 
             // SetStateDesign — write-side of GetStateDesign used by GlamLevels
@@ -82,10 +76,10 @@ namespace GlamShuffle.Services
             {
                 var ec = _pi.GetIpcSubscriber<Guid, int, int>("Glamourer.SetStateDesign")
                     .InvokeFunc(guid, 0);
-                _log.Debug("[GlamShuffle] SetStateDesign(Guid,0) ec={Ec}", ec);
-                if (ec == 0) { _log.Debug("[GlamShuffle] Succeeded via SetStateDesign"); return true; }
+                _log.Warning("[GlamShuffle] SetStateDesign(Guid,0) ec={Ec}", ec);
+                if (ec == 0) { _log.Warning("[GlamShuffle] Branch: SetStateDesign succeeded"); return true; }
             }
-            catch (Exception ex) { _log.Debug(ex, "[GlamShuffle] SetStateDesign threw"); }
+            catch (Exception ex) { _log.Warning(ex, "[GlamShuffle] SetStateDesign threw"); }
 
             // Path-based
             if (!string.IsNullOrEmpty(path))
@@ -94,10 +88,10 @@ namespace GlamShuffle.Services
                 {
                     var ec = _pi.GetIpcSubscriber<string, int, uint, bool, int>("Glamourer.ApplyDesign")
                         .InvokeFunc(path, 0, 0u, false);
-                    _log.Debug("[GlamShuffle] ApplyDesign(path,0) ec={Ec} path='{Path}'", ec, path);
-                    if (ec == 0) { _log.Debug("[GlamShuffle] Succeeded via path"); return true; }
+                    _log.Warning("[GlamShuffle] ApplyDesign(path,0) ec={Ec} path='{Path}'", ec, path);
+                    if (ec == 0) { _log.Warning("[GlamShuffle] Branch: path succeeded"); return true; }
                 }
-                catch (Exception ex) { _log.Debug(ex, "[GlamShuffle] ApplyDesign(path) threw"); }
+                catch (Exception ex) { _log.Warning(ex, "[GlamShuffle] ApplyDesign(path) threw"); }
             }
 
             // Name-based
@@ -105,19 +99,13 @@ namespace GlamShuffle.Services
             {
                 var ec = _pi.GetIpcSubscriber<string, int, uint, bool, int>("Glamourer.ApplyDesign")
                     .InvokeFunc(name, 0, 0u, false);
-                _log.Debug("[GlamShuffle] ApplyDesign(name,0) ec={Ec} name='{Name}'", ec, name);
-                if (ec == 0) { _log.Debug("[GlamShuffle] Succeeded via name"); return true; }
+                _log.Warning("[GlamShuffle] ApplyDesign(name,0) ec={Ec} name='{Name}'", ec, name);
+                if (ec == 0) { _log.Warning("[GlamShuffle] Branch: name succeeded"); return true; }
             }
-            catch (Exception ex) { _log.Debug(ex, "[GlamShuffle] ApplyDesign(name) threw"); }
+            catch (Exception ex) { _log.Warning(ex, "[GlamShuffle] ApplyDesign(name) threw"); }
 
             _log.Warning("[GlamShuffle] All apply attempts failed for '{Name}' (guid={Guid})", name, guid);
             return false;
-        }
-
-        private void RedrawPlayer()
-        {
-            try { _pi.GetIpcSubscriber<int, int, object>("Penumbra.RedrawObject").InvokeFunc(0, 1); }
-            catch { }
         }
 
         private static string StripQuotes(string s) =>
