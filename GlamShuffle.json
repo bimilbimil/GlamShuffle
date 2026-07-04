@@ -15,7 +15,7 @@
   "CategoryTags": [
     "Utility"
   ],
-  "AssemblyVersion": "1.0.0.7",
+  "AssemblyVersion": "1.0.0.8",
   "ApplicableVersion": "any",
   "DalamudApiLevel": 15,
   "HasConfigUi": true,

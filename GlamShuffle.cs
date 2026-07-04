@@ -122,7 +122,7 @@ namespace GlamShuffle
             }
 
             var pick = active[Random.Shared.Next(active.Count)];
-            var success = _glamourer.ApplyDesign(pick.Key, pick.Value.Name, pick.Value.Path);
+            var success = _glamourer.ApplyDesign(pick.Key, pick.Value.Name);
 
             if (success)
             {
